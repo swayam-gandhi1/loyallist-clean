@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Subscribed Users</title>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 40px;
+    }
+    th, td {
+      padding: 12px;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+    th {
+      background: #f0f0f0;
+    }
+  </style>
+</head>
+<body>
+  <h2>Subscribed Users</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Email</th>
+        <th>Subscribed At</th>
+      </tr>
+    </thead>
+    <tbody id="subscribersTableBody"></tbody>
+  </table>
+
+  <script>
+    async function fetchSubscribers() {
+      try {
+        const res = await fetch('/api/subscribe');
+        const data = await res.json();
+
+        const tbody = document.getElementById('subscribersTableBody');
+        tbody.innerHTML = '';
+
+        data.forEach(sub => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${sub.email}</td>
+            <td>${new Date(sub.createdAt).toLocaleString()}</td>
+          `;
+          tbody.appendChild(row);
+        });
+      } catch (err) {
+        console.error('Error fetching subscribers', err);
+      }
+    }
+
+    fetchSubscribers();
+  </script>
+</body>
+</html>

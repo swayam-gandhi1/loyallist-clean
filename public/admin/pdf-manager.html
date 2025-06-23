@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>PDF Manager</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      background-color: #f5f7fa;
+    }
+
+    h2, h3 {
+      color: #333;
+    }
+
+    form {
+      margin-bottom: 30px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    input[type="text"], input[type="file"], button {
+      display: block;
+      width: 100%;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      padding: 12px;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #D4B248;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #bfa032;
+    }
+
+    .pdf-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+    }
+
+    .pdf-card {
+      background: white;
+      padding: 20px;
+      border-left: 5px solid #D4B248;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      border-radius: 6px;
+    }
+
+    .pdf-card a {
+      text-decoration: none;
+      color: #D4B248;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+
+    .pdf-card a:hover {
+      color: #007BFF;
+    }
+  </style>
+</head>
+<body>
+  <h2>Upload a New PDF</h2>
+  <form id="uploadForm">
+    <input type="text" name="title" placeholder="PDF Title" required />
+    <input type="file" name="pdf" accept="application/pdf" required />
+    <button type="submit">Upload</button>
+  </form>
+
+  <h3>Uploaded PDFs</h3>
+  <div class="pdf-list" id="pdfList"></div>
+
+  <script>
+    const form = document.getElementById('uploadForm');
+    const pdfList = document.getElementById('pdfList');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+
+      const response = await fetch('/api/pdfs/upload', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (response.ok) {
+        alert('✅ PDF uploaded and newsletter sent!');
+        form.reset();
+        fetchPDFs();
+      } else {
+        const error = await response.json();
+        alert('❌ Upload failed: ' + (error.message || 'Something went wrong.'));
+      }
+    });
+
+    async function fetchPDFs() {
+      const res = await fetch('/api/pdfs');
+      const pdfs = await res.json();
+      pdfList.innerHTML = '';
+
+      pdfs.forEach(pdf => {
+        const card = document.createElement('div');
+        card.classList.add('pdf-card');
+        card.innerHTML = `
+          <a href="${pdf.url}" target="_blank" rel="noopener noreferrer">
+            📄 ${pdf.title}
+          </a>
+        `;
+        pdfList.appendChild(card);
+      });
+    }
+
+    fetchPDFs();
+  </script>
+</body>
+</html>

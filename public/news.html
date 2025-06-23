@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Campus News</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f5f7fa;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    nav {
+      background: whitesmoke;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+    }
+
+    nav a {
+      color: black;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 16px;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: #ffd700;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 60px 20px;
+      background: #D4B248;
+      ;
+      color: #fff;
+    }
+
+    .hero h1 {
+      font-size: 48px;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      opacity: 0.9;
+    }
+
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      padding: 40px 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .news-card {
+      background: #fff;
+      padding: 20px;
+      border-left: 5px solid #D4B248;
+      transition: background 0.2s ease;
+    }
+
+    .news-card:hover {
+      background: #e8f0fe;
+    }
+
+    .news-card p {
+      font-size: 16px;
+      color: #333;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 30px 0;
+      color: #777;
+      font-size: 14px;
+      background: #f1f1f1;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background-color: white;
+
+    }
+
+    .logo img {
+      height: 50px;
+      /* Adjust logo size */
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .logo img:hover {
+      transform: scale(1.05);
+      /* Slightly enlarge on hover */
+    }
+
+    .navbar {
+      display: flex;
+      align-items: center;
+    }
+
+    .navbar ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .navbar li {
+      display: inline-block;
+      position: relative;
+      /* Needed for dropdown positioning */
+    }
+
+    .navbar a {
+      display: block;
+      color: black;
+      padding: 14px 20px;
+      text-decoration: none;
+    }
+
+    .navbar a:hover {
+      background-color: #c4a12e;
+      /* Lighter blue */
+    }
+
+    .dropdown {
+      display: none;
+      /* Hidden by default */
+      position: absolute;
+      /* Position the dropdown */
+      background-color: black;
+      /* White background */
+      min-width: 160px;
+      /* Set a minimum width */
+      z-index: 1;
+      /* Sit on top */
+    }
+
+    .dropdown li {
+      float: none;
+      /* Stack dropdown items vertically */
+    }
+
+    .dropdown a {
+      color: #D4B248;
+      /* Navy blue text */
+      padding: 12px 16px;
+      /* Padding for dropdown items */
+      text-decoration: none;
+      display: block;
+      /* Make dropdown items block elements */
+    }
+
+    .dropdown a:hover {
+      background-color: black;
+      /* Light gray on hover */
+    }
+
+    .navbar li:hover .dropdown {
+      display: block;
+      /* Show dropdown on hover */
+    }
+
+
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      .navbar li {
+        display: block;
+        /* Stack items vertically on small screens */
+        text-align: left;
+        /* Align text to the left */
+      }
+
+      .navbar {
+        text-align: left;
+        /* Align navbar items to the left */
+      }
+
+
+    }
+
+    /* Mobile Navbar Toggle Button */
+    .menu-toggle {
+      display: none;
+      font-size: 24px;
+      color: black;
+      cursor: pointer;
+    }
+
+
+
+
+
+    /* Hide menu on small screens by default */
+    @media (max-width: 768px) {
+
+      .align-logo {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+      }
+
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .menu-toggle {
+        display: block;
+        margin-left: auto;
+      }
+
+      .navbar {
+        width: 100%;
+        display: none;
+        flex-direction: column;
+        background-color: #D4B248;
+      }
+
+      .navbar ul {
+        width: 100%;
+      }
+
+      .navbar li {
+        display: block;
+        width: 100%;
+      }
+
+      .navbar a {
+        padding: 10px 20px;
+      }
+
+      .navbar.active {
+        display: flex;
+      }
+
+      .dropdown {
+        position: static;
+      }
+
+      .navbar li:hover .dropdown {
+        display: none;
+        /* Disable hover dropdown on mobile */
+      }
+
+      .navbar li.active .dropdown {
+        display: block;
+      }
+    }
+
+
+
+
+    .header-buttons button {
+      background-color: #D4B248;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      margin-left: 10px;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background 0.3s;
+    }
+
+    .header-buttons button:hover {
+      background-color: #D4B248;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="header">
+    <div class="align-logo">
+      <div class="logo">
+        <a href="index.html">
+          <img src="image/loyalist logo-03.png" alt="Logo" />
+      </div>
+      <div class="menu-toggle" onclick="toggleMenu()">&#9776;</div>
+    </div>
+
+    <nav class="navbar" id="navbar">
+      <ul>
+
+        <li class="has-dropdown" onclick="toggleDropdown(event)">
+          <a href="about.html">About Us</a>
+          <ul class="dropdown">
+            <li><a href="company.html">Company Profile</a></li>
+            <li><a href="directors.html">Directors</a></li>
+            <li><a href="corporate.html">Corporate Structure</a></li>
+          </ul>
+        </li>
+
+        <li class="has-dropdown" onclick="toggleDropdown(event)">
+          <a href="project.html">Projects</a>
+        </li>
+
+        <li class="has-dropdown" onclick="toggleDropdown(event)">
+          <a href="#">Investors</a>
+          <ul class="dropdown">
+            <li><a href="statements.html">Statements</a></li>
+            <li><a href="directors.html">MD&A</a></li>
+          </ul>
+        </li>
+
+        <li class="has-dropdown" onclick="toggleDropdown(event)">
+          <a href="#">News & Media</a>
+          <ul class="dropdown">
+            <li><a href="news.html">News</a></li>
+            <li><a href="disclaimers.html">Disclaimers</a></li>
+          </ul>
+        </li>
+
+        <li><a href="Contact.html">Contact</a></li>
+      </ul>
+      <div class="header-buttons">
+      </div>
+    </nav>
+  </header>
+
+  <header class="hero">
+    <h1>News</h1>
+    <p>Stay updated with the latest happenings at our campus</p>
+  </header>
+
+  <section class="news-grid" id="newsContainer">
+    <!-- News cards will be inserted here dynamically -->
+  </section>
+
+  <footer class="footer">
+    <p>&copy; 2025 Loyalist College. All rights reserved.</p>
+  </footer>
+
+  <script>
+    async function fetchNewsPDFs() {
+      try {
+        const res = await fetch('/api/pdfs');
+        const data = await res.json();
+
+        const container = document.getElementById('newsContainer');
+        container.innerHTML = '';
+
+        data.forEach(item => {
+          const card = document.createElement('div');
+          card.className = 'news-card';
+          card.onclick = () => window.open(item.url, '_blank');
+          card.innerHTML = `<p>📄 ${item.title}</p>`;
+          container.appendChild(card);
+        });
+      } catch (error) {
+        console.error('Failed to load PDFs:', error);
+      }
+    }
+
+    // Fetch PDFs on page load
+    window.onload = fetchNewsPDFs;
+  </script>
+</body>
+
+</html>
