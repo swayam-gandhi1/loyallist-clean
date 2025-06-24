@@ -274,3 +274,57 @@ let slideIndex = 0;
 });
 
 
+// for subscribe form 
+
+  async function handleSubscribe(event) {
+    event.preventDefault();
+
+    const emailInput = document.getElementById('homepageSubscriberEmail');
+    const messageDiv = document.getElementById('subscribe-message');
+    const email = emailInput.value.trim();
+
+    // Simple email regex
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!email || !emailPattern.test(email)) {
+      messageDiv.style.display = 'block';
+      messageDiv.style.color = 'red';
+      messageDiv.textContent = 'Please enter a valid email address.';
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/subscribe/homepage', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await res.json();
+
+      messageDiv.style.display = 'block';
+      if (res.ok) {
+        messageDiv.style.color = 'green';
+        messageDiv.textContent = data.message || 'Subscribed successfully!';
+        emailInput.value = '';
+
+        setTimeout(() => {
+          messageDiv.style.display = 'none';
+        }, 4000);
+      } else {
+        messageDiv.style.color = 'red';
+        messageDiv.textContent = data.message || 'Something went wrong.';
+        setTimeout(() => {
+          messageDiv.style.display = 'none';
+        }, 5000);
+      }
+    } catch (err) {
+      console.error('❌ Subscription error:', err);
+      messageDiv.style.display = 'block';
+      messageDiv.style.color = 'red';
+      messageDiv.textContent = 'Server error. Please try again later.';
+      setTimeout(() => {
+        messageDiv.style.display = 'none';
+      }, 5000);
+    }
+  }

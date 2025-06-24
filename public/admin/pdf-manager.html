@@ -22,13 +22,16 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
-    input[type="text"], input[type="file"], button {
+    input[type="text"],
+    input[type="file"],
+    button {
       display: block;
       width: 100%;
       margin-top: 10px;
       margin-bottom: 20px;
       padding: 12px;
       font-size: 16px;
+      box-sizing: border-box;
     }
 
     button {
@@ -54,17 +57,36 @@
       border-left: 5px solid #D4B248;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
-    .pdf-card a {
-      text-decoration: none;
-      color: #D4B248;
+    .pdf-title {
+      font-size: 16px;
       font-weight: bold;
-      transition: color 0.3s;
+      margin-bottom: 10px;
+      color: #333;
     }
 
-    .pdf-card a:hover {
-      color: #007BFF;
+    .pdf-link {
+      text-decoration: none;
+      background-color: #D4B248;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 4px;
+      text-align: center;
+      transition: background 0.3s;
+    }
+
+    .pdf-link:hover {
+      background-color: #bfa032;
+    }
+
+    #loading {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #555;
     }
   </style>
 </head>
@@ -74,6 +96,7 @@
     <input type="text" name="title" placeholder="PDF Title" required />
     <input type="file" name="pdf" accept="application/pdf" required />
     <button type="submit">Upload</button>
+    <div id="loading"></div>
   </form>
 
   <h3>Uploaded PDFs</h3>
@@ -82,41 +105,56 @@
   <script>
     const form = document.getElementById('uploadForm');
     const pdfList = document.getElementById('pdfList');
+    const loading = document.getElementById('loading');
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const formData = new FormData(form);
+      loading.textContent = 'Uploading...';
 
-      const response = await fetch('/api/pdfs/upload', {
-        method: 'POST',
-        body: formData
-      });
+      try {
+        const response = await fetch('/api/pdfs/upload', {
+          method: 'POST',
+          body: formData
+        });
 
-      if (response.ok) {
-        alert('✅ PDF uploaded and newsletter sent!');
-        form.reset();
-        fetchPDFs();
-      } else {
-        const error = await response.json();
-        alert('❌ Upload failed: ' + (error.message || 'Something went wrong.'));
+        if (response.ok) {
+          alert('✅ PDF uploaded and newsletter sent!');
+          form.reset();
+          fetchPDFs();
+        } else {
+          const error = await response.json();
+          alert('❌ Upload failed: ' + (error.message || 'Something went wrong.'));
+        }
+      } catch (err) {
+        alert('❌ Network error: ' + err.message);
+      } finally {
+        loading.textContent = '';
       }
     });
 
     async function fetchPDFs() {
-      const res = await fetch('/api/pdfs');
-      const pdfs = await res.json();
-      pdfList.innerHTML = '';
+      loading.textContent = 'Loading PDFs...';
+      try {
+        const res = await fetch('/api/pdfs');
+        const pdfs = await res.json();
+        pdfList.innerHTML = '';
 
-      pdfs.forEach(pdf => {
-        const card = document.createElement('div');
-        card.classList.add('pdf-card');
-        card.innerHTML = `
-          <a href="${pdf.url}" target="_blank" rel="noopener noreferrer">
-            📄 ${pdf.title}
-          </a>
-        `;
-        pdfList.appendChild(card);
-      });
+        pdfs.forEach(pdf => {
+          const card = document.createElement('div');
+          card.classList.add('pdf-card');
+          card.innerHTML = `
+            <div class="pdf-title">📄 ${pdf.title}</div>
+            <a class="pdf-link" href="${pdf.url}" target="_blank" rel="noopener noreferrer">View / Download</a>
+          `;
+          pdfList.appendChild(card);
+        });
+      } catch (err) {
+        pdfList.innerHTML = '<p>❌ Failed to load PDFs.</p>';
+        console.error(err);
+      } finally {
+        loading.textContent = '';
+      }
     }
 
     fetchPDFs();

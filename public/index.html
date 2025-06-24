@@ -67,7 +67,7 @@
       </div>
   </header>
 
-    <!-- Modal -->
+  <!-- Modal -->
   <div id="contactModal" class="modal">
     <div class="modal-content">
       <span class="close-btn" id="closeModalBtn">&times;</span>
@@ -129,15 +129,15 @@
   </section>
 
   <!-- Welcome Popup -->
- <div class="welcome-popup" id="welcomePopup">
-  <div class="popup-content">
-    <span class="close-btn" onclick="closePopup()">&times;</span>
-    <h2>Subscribe to Loyalist Updates</h2>
-    <p>Stay updated with our latest gold, silver, and copper discoveries.</p>
-    <input type="email" id="subscriberEmail" placeholder="Enter your email" />
-    <button onclick="subscribe()">Subscribe</button>
+  <div class="welcome-popup" id="welcomePopup">
+    <div class="popup-content">
+      <span class="close-btn" onclick="closePopup()">&times;</span>
+      <h2>Subscribe to Loyalist Updates</h2>
+      <p>Stay updated with our latest gold, silver, and copper discoveries.</p>
+      <input type="email" id="subscriberEmail" placeholder="Enter your email" />
+      <button onclick="subscribe()">Subscribe</button>
+    </div>
   </div>
-</div>
 
 
   <!-- projects -->
@@ -240,7 +240,7 @@
       </div>
     </div>
   </section>
- <!-- latest news  -->
+  <!-- latest news  -->
   <!-- latest news  -->
   <section class="news-section">
     <div class="news-header">
@@ -274,7 +274,7 @@
 
 
 
-   <section class="contact-header">
+  <section class="contact-header">
     <h1>Contact Us</h1>
     <p>Have questions? We're here to help. Reach out via the form or directly using the details below.</p>
   </section>
@@ -282,13 +282,13 @@
   <section class="contact-container">
     <div class="contact-form">
       <h2>Get In Touch</h2>
-       <form id="contactForm">
-          <input type="text" name="name" placeholder="Your Name" required />
-          <input type="email" name="email" placeholder="Your Email" required />
-          <input type="text" name="subject" placeholder="Subject" required />
-          <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
-          <button type="submit">Send Message</button>
-        </form>
+      <form id="contactForm">
+        <input type="text" name="name" placeholder="Your Name" required />
+        <input type="email" name="email" placeholder="Your Email" required />
+        <input type="text" name="subject" placeholder="Subject" required />
+        <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
     </div>
 
 
@@ -312,7 +312,7 @@
 
       <div class="map-placeholder">
         <iframe src="https://maps.google.com/maps?q=110%20Yonge%20St,%20Toronto&t=&z=13&ie=UTF8&iwloc=&output=embed"
-                allowfullscreen loading="lazy" title="Company Location"></iframe>
+          allowfullscreen loading="lazy" title="Company Location"></iframe>
       </div>
     </div>
   </section>
@@ -352,13 +352,29 @@
               class="fab fa-linkedin-in"></i></a>
           <a href="https://loyalistexp.ca/"><i class="fab fa-twitter"></i></a>
           <a href="https://loyalistexp.ca/"><i class="fab fa-facebook-f"></i></a>
+
+        </div><br />
+        <div class="subscribe-box">
+          <h4>Subscribe to Our Newsletter</h4>
+
+          <form class="subscribe-form" onsubmit="handleSubscribe(event)" aria-label="Homepage Newsletter Subscription">
+            <input type="email" placeholder="Enter your email" id="homepageSubscriberEmail" name="email" required
+              style="padding: 10px; width: 250px;" /><br /><br />
+            <button type="submit" style="padding: 10px 20px;">Subscribe</button>
+          </form>
+
+          <br /><br />
+          <div id="subscribe-message" class="subscribe-message" style="display: none; font-weight: bold;"></div>
         </div>
-      </div>
+      </div><br />
+
     </div><br />
-    <div class="footer-bottom">
+
+    <div class="footer-bottom ">
       <p>&copy; 2025 Loyalist Exploration Limited. All rights reserved.</p>
     </div>
   </footer>
+
 
   <script src="script.js"></script>
 </body>

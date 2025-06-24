@@ -7,6 +7,11 @@ const subscriberSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    source: {
+      type: String,
+      enum: ['popup', 'homepage', 'about' ],  // ✅ added 'about'
+      default: 'popup',
+    },
   },
   { timestamps: true }
 );

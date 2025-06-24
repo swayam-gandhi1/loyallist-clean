@@ -1445,7 +1445,9 @@ body {
   text-decoration: underline;
 }
 
-.contact-column, .quick-links, .social-column {
+.contact-column,
+.quick-links,
+.social-column {
   flex: 1;
   min-width: 200px;
 }
@@ -1469,12 +1471,54 @@ body {
   color: #FFD700;
 }
 
+.subscribe-form {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.subscribe-form input[type="email"] {
+  padding: 10px;
+  flex: 1;
+  background-color: #111;
+  color: #FFD700;
+  border: 3px solid #FFD700;
+  border-radius: 4px;
+  min-width: 200px;
+}
+
+.subscribe-form button {
+  padding: 10px 16px;
+  background-color: #FFD700;
+  border: 3px solid #FFD700;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #000;
+  min-width: 120px;
+}
+
+.subscribe-form button:hover {
+  background-color: #e6c400;
+}
+
+.subscribe-message {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #222;
+  color: #e6c400;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
 .footer-bottom {
   text-align: center;
   padding-top: 20px;
   border-top: 1px solid #333;
   font-size: 14px;
 }
+
 
 /* Responsive */
 @media (max-width: 768px) {

@@ -8,47 +8,47 @@ const socketIo = require('socket.io');
 // Load environment variables
 dotenv.config();
 
-// Initialize Express
+// Initialize Express and HTTP server
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server); // Attach socket.io to the server
+const io = socketIo(server); // Attach socket.io
 
 // MongoDB models
 const User = require('./models/User');
-const Message = require('./models/Message'); // Add this model if you haven't yet
-const adminRoutes = require('./routes/adminRoutes');
+const Message = require('./models/Message');
 
-
+// Optional: Security middleware (uncomment if needed)
+// const cors = require('cors');
+// const helmet = require('helmet');
+// app.use(cors());
+// app.use(helmet());
 
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static files
+// Serve static files (includes PDFs)
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/uploads', express.static('public/uploads'));
-
+app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
 // Routes
 const authRoutes = require('./routes/authRoutes');
 const messageRoutes = require('./routes/messageRoutes');
 const userRoutes = require('./routes/userRoutes');
 const newsRoutes = require('./routes/newsRoutes');
+const pdfRoutes = require('./routes/pdfRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 const subscriberRoutes = require('./routes/subscriberRoutes');
 
-
-
 app.use('/api', authRoutes);
-app.use('/api/messages', messageRoutes); // Mount path
+app.use('/api/messages', messageRoutes);
 app.use('/api', userRoutes);
 app.use('/api/news', newsRoutes);
-app.use('/api/pdfs', require('./routes/pdfRoutes'));
-app.use('/uploads/pdfs', express.static(path.join(__dirname, 'public/uploads/pdfs')));
+app.use('/api/pdfs', pdfRoutes);
 app.use('/api/admin', adminRoutes);
-app.use('/api/subscribe', subscriberRoutes);
+app.use('/api/subscribe', subscriberRoutes); // ✅ only once
 
-
-// MongoDB connection
+// MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
@@ -58,7 +58,7 @@ mongoose.connect(process.env.MONGODB_URI, {
   console.error('❌ MongoDB connection error:', err);
 });
 
-// Socket.IO connection
+// Socket.IO: Admin dashboard stats
 io.on('connection', async (socket) => {
   console.log('📡 New admin connected to dashboard');
 
@@ -71,11 +71,11 @@ io.on('connection', async (socket) => {
       totalMessages
     });
   } catch (err) {
-    console.error('Error fetching dashboard stats:', err);
+    console.error('❌ Error fetching dashboard stats:', err);
   }
 });
 
-// Fallback route for index
+// Fallback route for homepage
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
