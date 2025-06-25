@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // for news 
 
-let slideIndex = 0;
+ let slideIndex = 0;
     const visibleCards = 3;
     let olderNews = [];
 
@@ -163,7 +163,7 @@ let slideIndex = 0;
     function openModal(title, image, content) {
       document.getElementById('modalTitle').innerText = title;
       document.getElementById('modalImage').src = image;
-      document.getElementById('modalContent').innerText = content || 'No additional content available.';
+      document.getElementById('modalContent').innerHTML = content || '<p>No additional content available.</p>';
       document.getElementById('newsModal').style.display = 'flex';
     }
 
@@ -174,6 +174,23 @@ let slideIndex = 0;
     document.getElementById('newsModal').addEventListener('click', function (e) {
       if (e.target === this) closeModal();
     });
+
+    function renderOlderNews() {
+      const container = document.getElementById('olderNewsContainer');
+      const start = slideIndex * visibleCards;
+      const visibleItems = olderNews.slice(start, start + visibleCards);
+
+      container.innerHTML = visibleItems.map((news) => `
+        <div class="news-card">
+          <img src="${getImageUrl(news.imageUrl)}" alt="News Image" />
+          <div class="news-content">
+            <div class="news-title">${news.title || 'Untitled News'}</div>
+            <div class="news-description">${(news.description || news.content || 'No content available.').replace(/<[^>]+>/g, '').substring(0, 100)}...</div>
+            <span class="read-more" onclick='openModal(${JSON.stringify(news.title)}, "${getImageUrl(news.imageUrl)}", ${JSON.stringify(news.content || '')})'>Read More ▶</span>
+          </div>
+        </div>
+      `).join('');
+    }
 
     async function loadNews() {
       try {
@@ -189,8 +206,8 @@ let slideIndex = 0;
             <img src="${getImageUrl(news.imageUrl)}" alt="News Image" />
             <div class="latest-content">
               <div class="news-title">${news.title || 'Untitled News'}</div>
-              <div class="news-description">${(news.description || news.content || 'No content available.').substring(0, 100)}...</div>
-              <span class="read-more" onclick='openModal("${news.title.replace(/"/g, '&quot;')}", "${getImageUrl(news.imageUrl)}", ${JSON.stringify(news.content || '')})'>Read More ▶</span>
+              <div class="news-description">${(news.description || news.content || 'No content available.').replace(/<[^>]+>/g, '').substring(0, 100)}...</div>
+              <span class="read-more" onclick='openModal(${JSON.stringify(news.title)}, "${getImageUrl(news.imageUrl)}", ${JSON.stringify(news.content || '')})'>Read More ▶</span>
             </div>
           </div>
         `).join('');
@@ -199,23 +216,6 @@ let slideIndex = 0;
       } catch (err) {
         console.error('Failed to load news:', err);
       }
-    }
-
-    function renderOlderNews() {
-      const container = document.getElementById('olderNewsContainer');
-      const start = slideIndex * visibleCards;
-      const visibleItems = olderNews.slice(start, start + visibleCards);
-
-      container.innerHTML = visibleItems.map((news) => `
-        <div class="news-card">
-          <img src="${getImageUrl(news.imageUrl)}" alt="News Image" />
-          <div class="news-content">
-            <div class="news-title">${news.title || 'Untitled News'}</div>
-            <div class="news-description">${(news.description || news.content || 'No content available.').substring(0, 100)}...</div>
-            <span class="read-more" onclick='openModal("${news.title.replace(/"/g, '&quot;')}", "${getImageUrl(news.imageUrl)}", ${JSON.stringify(news.content || '')})'>Read More ▶</span>
-          </div>
-        </div>
-      `).join('');
     }
 
     document.getElementById('prevBtn').addEventListener('click', () => {
@@ -232,7 +232,10 @@ let slideIndex = 0;
       }
     });
 
-    loadNews();
+    // ✅ Ensure DOM is ready before manipulating elements
+    window.onload = () => {
+      loadNews();
+    };
 
      
   document.getElementById('contactForm')?.addEventListener('submit', async (e) => {
