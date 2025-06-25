@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Campus News</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
     * {
       margin: 0;
@@ -19,42 +20,51 @@
       line-height: 1.6;
     }
 
-    nav {
-      background: whitesmoke;
-      padding: 15px 20px;
+    .header {
       display: flex;
-      justify-content: center;
-      gap: 30px;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background-color: white;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
-    nav a {
+    .logo img {
+      height: 50px;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .logo img:hover {
+      transform: scale(1.05);
+    }
+
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .navbar a {
       color: black;
       text-decoration: none;
       font-weight: bold;
-      font-size: 16px;
-      transition: color 0.3s;
     }
 
-    nav a:hover {
-      color: #ffd700;
+    .navbar a:hover {
+      color: #D4B248;
     }
 
     .hero {
       text-align: center;
       padding: 60px 20px;
       background: #D4B248;
-      ;
       color: #fff;
     }
 
     .hero h1 {
       font-size: 48px;
       margin-bottom: 10px;
-    }
-
-    .hero p {
-      font-size: 18px;
-      opacity: 0.9;
     }
 
     .news-grid {
@@ -70,267 +80,135 @@
       background: #fff;
       padding: 20px;
       border-left: 5px solid #D4B248;
-      transition: background 0.2s ease;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s ease;
     }
 
     .news-card:hover {
-      background: #e8f0fe;
+      transform: translateY(-5px);
     }
 
-    .news-card p {
-      font-size: 16px;
-      color: #333;
+    .action-buttons {
+      margin-top: 10px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
     }
 
-    .footer {
-      text-align: center;
-      padding: 30px 0;
-      color: #777;
+    .action-buttons a {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background-color: #D4B248;
+      color: white;
+      padding: 8px 14px;
+      text-decoration: none;
+      border-radius: 4px;
       font-size: 14px;
-      background: #f1f1f1;
+      transition: background-color 0.3s ease;
     }
 
-    .header {
+    .action-buttons a:hover {
+      background-color: #bfa032;
+    }
+
+    .site-footer {
+      background-color: #000;
+      color: #ddd;
+      padding: 40px 20px 20px;
+    }
+
+    .footer-container {
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
-      align-items: center;
-      padding: 10px 20px;
-      background-color: white;
-
+      max-width: 1200px;
+      margin: auto;
+      gap: 30px;
     }
 
-    .logo img {
-      height: 50px;
-      /* Adjust logo size */
-      transition: transform 0.3s ease-in-out;
+    .footer-container h4 {
+      color: #FFD700;
+      margin-bottom: 15px;
+      font-size: 18px;
     }
 
-    .logo img:hover {
-      transform: scale(1.05);
-      /* Slightly enlarge on hover */
+    .footer-container a {
+      color: #ddd;
+      text-decoration: none;
     }
 
-    .navbar {
-      display: flex;
-      align-items: center;
+    .footer-container a:hover {
+      text-decoration: underline;
     }
 
-    .navbar ul {
-      list-style-type: none;
+    .contact-column,
+    .quick-links,
+    .social-column {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .quick-links ul {
+      list-style: none;
       padding: 0;
     }
 
-    .navbar li {
-      display: inline-block;
-      position: relative;
-      /* Needed for dropdown positioning */
+    .quick-links li {
+      margin-bottom: 10px;
     }
 
-    .navbar a {
-      display: block;
-      color: black;
-      padding: 14px 20px;
-      text-decoration: none;
+    .social-icons a {
+      margin-right: 15px;
+      font-size: 20px;
+      color: #ddd;
     }
 
-    .navbar a:hover {
-      background-color: #c4a12e;
-      /* Lighter blue */
+    .social-icons a:hover {
+      color: #FFD700;
     }
 
-    .dropdown {
-      display: none;
-      /* Hidden by default */
-      position: absolute;
-      /* Position the dropdown */
-      background-color: black;
-      /* White background */
-      min-width: 160px;
-      /* Set a minimum width */
-      z-index: 1;
-      /* Sit on top */
+    .footer-bottom {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 14px;
     }
 
-    .dropdown li {
-      float: none;
-      /* Stack dropdown items vertically */
-    }
-
-    .dropdown a {
-      color: #D4B248;
-      /* Navy blue text */
-      padding: 12px 16px;
-      /* Padding for dropdown items */
-      text-decoration: none;
-      display: block;
-      /* Make dropdown items block elements */
-    }
-
-    .dropdown a:hover {
-      background-color: black;
-      /* Light gray on hover */
-    }
-
-    .navbar li:hover .dropdown {
-      display: block;
-      /* Show dropdown on hover */
-    }
-
-
-
-    /* Responsive Styles */
     @media (max-width: 768px) {
-      .navbar li {
-        display: block;
-        /* Stack items vertically on small screens */
-        text-align: left;
-        /* Align text to the left */
-      }
-
-      .navbar {
-        text-align: left;
-        /* Align navbar items to the left */
-      }
-
-
-    }
-
-    /* Mobile Navbar Toggle Button */
-    .menu-toggle {
-      display: none;
-      font-size: 24px;
-      color: black;
-      cursor: pointer;
-    }
-
-
-
-
-
-    /* Hide menu on small screens by default */
-    @media (max-width: 768px) {
-
-      .align-logo {
-        display: flex;
-        justify-content: space-between;
+      .footer-container {
+        flex-direction: column;
         align-items: center;
-        width: 100%;
+        text-align: center;
       }
 
-      .header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .menu-toggle {
-        display: block;
-        margin-left: auto;
-      }
-
-      .navbar {
-        width: 100%;
-        display: none;
-        flex-direction: column;
-        background-color: #D4B248;
+      .quick-links ul {
+        display: inline-block;
       }
 
       .navbar ul {
-        width: 100%;
+        flex-direction: column;
+        align-items: center;
       }
-
-      .navbar li {
-        display: block;
-        width: 100%;
-      }
-
-      .navbar a {
-        padding: 10px 20px;
-      }
-
-      .navbar.active {
-        display: flex;
-      }
-
-      .dropdown {
-        position: static;
-      }
-
-      .navbar li:hover .dropdown {
-        display: none;
-        /* Disable hover dropdown on mobile */
-      }
-
-      .navbar li.active .dropdown {
-        display: block;
-      }
-    }
-
-
-
-
-    .header-buttons button {
-      background-color: #D4B248;
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      margin-left: 10px;
-      cursor: pointer;
-      border-radius: 4px;
-      transition: background 0.3s;
-    }
-
-    .header-buttons button:hover {
-      background-color: #D4B248;
     }
   </style>
 </head>
 
 <body>
   <header class="header">
-    <div class="align-logo">
-      <div class="logo">
-        <a href="index.html">
-          <img src="image/loyalist logo-03.png" alt="Logo" />
-      </div>
-      <div class="menu-toggle" onclick="toggleMenu()">&#9776;</div>
+    <div class="logo">
+      <a href="index.html">
+        <img src="image/loyalist logo-03.png" alt="Logo" />
+      </a>
     </div>
-
     <nav class="navbar" id="navbar">
       <ul>
-
-        <li class="has-dropdown" onclick="toggleDropdown(event)">
-          <a href="about.html">About Us</a>
-          <ul class="dropdown">
-            <li><a href="company.html">Company Profile</a></li>
-            <li><a href="directors.html">Directors</a></li>
-            <li><a href="corporate.html">Corporate Structure</a></li>
-          </ul>
-        </li>
-
-        <li class="has-dropdown" onclick="toggleDropdown(event)">
-          <a href="project.html">Projects</a>
-        </li>
-
-        <li class="has-dropdown" onclick="toggleDropdown(event)">
-          <a href="#">Investors</a>
-          <ul class="dropdown">
-            <li><a href="statements.html">Statements</a></li>
-            <li><a href="directors.html">MD&A</a></li>
-          </ul>
-        </li>
-
-        <li class="has-dropdown" onclick="toggleDropdown(event)">
-          <a href="#">News & Media</a>
-          <ul class="dropdown">
-            <li><a href="news.html">News</a></li>
-            <li><a href="disclaimers.html">Disclaimers</a></li>
-          </ul>
-        </li>
-
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="project.html">Projects</a></li>
+        <li><a href="statements.html">Statements</a></li>
+        <li><a href="news.html">News</a></li>
         <li><a href="Contact.html">Contact</a></li>
       </ul>
-      <div class="header-buttons">
-      </div>
     </nav>
   </header>
 
@@ -343,32 +221,70 @@
     <!-- News cards will be inserted here dynamically -->
   </section>
 
-  <footer class="footer">
-    <p>&copy; 2025 Loyalist College. All rights reserved.</p>
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="contact-column">
+        <h4>Contact Information</h4>
+        <p><strong>Email:</strong> <a href="mailto:efarr001@icloud.com">efarr001@icloud.com</a></p>
+        <p><strong>Phone:</strong> <a href="tel:+16472961270">+1 647‑296‑1270</a></p>
+        <p><strong>Address:</strong><br>133 Richmond St W, Suite 204<br>Toronto, ON M5H 2L3, Canada</p>
+      </div>
+      <div class="quick-links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#investors">Investors</a></li>
+          <li><a href="#news">News</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="social-column">
+        <h4>Follow Us</h4>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+        </div>
+      </div>
+    </div><br />
+    <div class="footer-bottom">
+      <p>&copy; 2025 Loyalist Exploration Limited. All rights reserved.</p>
+    </div>
   </footer>
 
   <script>
     async function fetchNewsPDFs() {
       try {
-        const res = await fetch('/api/pdfs');
+        const res = await fetch('/api/pdf');
         const data = await res.json();
 
         const container = document.getElementById('newsContainer');
         container.innerHTML = '';
 
+        if (!data.length) {
+          container.innerHTML = '<p>No newsletters found.</p>';
+          return;
+        }
+
         data.forEach(item => {
           const card = document.createElement('div');
           card.className = 'news-card';
-          card.onclick = () => window.open(item.url, '_blank');
-          card.innerHTML = `<p>📄 ${item.title}</p>`;
+          card.innerHTML = `
+            <strong>📄 ${item.title}</strong>
+            <div class="action-buttons">
+              <a href="${item.url}" target="_blank" rel="noopener noreferrer">🔍 View</a>
+              <a href="${item.url}" download>📥 PDF</a>
+            </div>
+          `;
           container.appendChild(card);
         });
       } catch (error) {
-        console.error('Failed to load PDFs:', error);
+        console.error('❌ Failed to load PDFs:', error);
+        document.getElementById('newsContainer').innerHTML = '<p style="color:red;">Failed to load newsletters.</p>';
       }
     }
 
-    // Fetch PDFs on page load
     window.onload = fetchNewsPDFs;
   </script>
 </body>

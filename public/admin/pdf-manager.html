@@ -110,33 +110,35 @@
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const formData = new FormData(form);
-      loading.textContent = 'Uploading...';
+      loading.textContent = '📤 Uploading PDF...';
 
       try {
-        const response = await fetch('/api/pdfs/upload', {
+        const response = await fetch('/api/pdf/upload', {
           method: 'POST',
           body: formData
         });
 
+        const result = await response.json();
+
         if (response.ok) {
-          alert('✅ PDF uploaded and newsletter sent!');
+          alert(`✅ PDF "${result.pdf.title}" uploaded successfully!`);
           form.reset();
           fetchPDFs();
         } else {
-          const error = await response.json();
-          alert('❌ Upload failed: ' + (error.message || 'Something went wrong.'));
+          alert('❌ Upload failed: ' + (result.error || 'Something went wrong.'));
         }
       } catch (err) {
         alert('❌ Network error: ' + err.message);
+        console.error(err);
       } finally {
         loading.textContent = '';
       }
     });
 
     async function fetchPDFs() {
-      loading.textContent = 'Loading PDFs...';
+      loading.textContent = '📥 Loading PDFs...';
       try {
-        const res = await fetch('/api/pdfs');
+        const res = await fetch('/api/pdf');
         const pdfs = await res.json();
         pdfList.innerHTML = '';
 
